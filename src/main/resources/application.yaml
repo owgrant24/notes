@@ -2,9 +2,18 @@ server:
   port: 8088
 
 spring:
+  application:
+    name: notes
+  jpa:
+    hibernate:
+      ddl-auto: validate
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/notes
-    password: postgres
-    username: postgres
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  liquibase:
+    database-change-log-lock-table: NOTES_DATABASECHANGELOGLOCK
+
+
 

@@ -38,6 +38,12 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+tasks {
+	bootJar {
+		archiveFileName.set("notes.jar")
+	}
+}
+
 allOpen {
 	annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass", "javax.persistence.Embeddable")
 }
