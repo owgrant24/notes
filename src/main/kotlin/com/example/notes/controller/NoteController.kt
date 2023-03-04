@@ -18,6 +18,9 @@ class NoteController(
     @GetMapping
     fun getAll(): List<NoteDto> = noteService.getNoteAll()
 
+    @GetMapping("/categories/{categoryId}")
+    fun getAllByCategoryId(@PathVariable categoryId: Long): List<NoteDto> = noteService.getAllByCategoryId(categoryId)
+
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): NoteDto = noteService.getNote(id)
 

@@ -34,6 +34,12 @@ class NoteService(
     }
 
     @Transactional
+    fun getAllByCategoryId(categoryId: Long): List<NoteDto> {
+        val notes = noteRepository.findNotesByCategoryId(categoryId)
+        return notes.map { note -> noteMapper.mapToNoteDto(note) }
+    }
+
+    @Transactional
     fun getNote(id: Long): NoteDto {
         val note = noteRepository.getReferenceById(id)
         return noteMapper.mapToNoteDto(note)
