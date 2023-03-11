@@ -20,7 +20,7 @@ class NoteService(
 
     @Transactional
     fun create(dto: CreateNoteRequest): Long {
-        val category = categoryRepository.getReferenceById(dto.categoryId)
+        val category = categoryRepository.getReferenceById(dto.categoryId!!)
         val note: Note = noteMapper.mapToNote(dto)
         note.category = category
         noteRepository.save(note)
