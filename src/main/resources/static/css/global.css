@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #e7e7e7;
+}
+
+.btn-primary {
+    background-color: #7498bd;
+    border-color: #7498bd;
+}
+
+.btn-danger {
+    background-color: #f6837a;
+    border-color: #f6837a;
+}
