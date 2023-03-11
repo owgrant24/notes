@@ -1,0 +1,7 @@
+.cve {
+    resize: none; /* Запрещаем изменять размер */
+}
+
+.inf1 {
+    font-size: small
+}
