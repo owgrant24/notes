@@ -5,6 +5,7 @@ import com.example.notes.dto.NoteDto
 import com.example.notes.dto.UpdateNoteRequest
 import com.example.notes.service.NoteService
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/v1/notes")
@@ -13,7 +14,7 @@ class NoteController(
 ) {
 
     @PostMapping
-    fun create(@RequestBody dto: CreateNoteRequest): Long = noteService.create(dto)
+    fun create(@Valid @RequestBody dto: CreateNoteRequest): Long = noteService.create(dto)
 
     @GetMapping
     fun getAll(): List<NoteDto> = noteService.getNoteAll()
@@ -25,7 +26,7 @@ class NoteController(
     fun getById(@PathVariable id: Long): NoteDto = noteService.getNote(id)
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody dto: UpdateNoteRequest) = noteService.update(id, dto)
+    fun update(@PathVariable id: Long, @Valid @RequestBody dto: UpdateNoteRequest) = noteService.update(id, dto)
 
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long) = noteService.delete(id)
