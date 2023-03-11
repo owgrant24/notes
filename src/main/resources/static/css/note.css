@@ -1,0 +1,17 @@
+.nvt {
+    height: 80vh;
+    resize: none; /* Запрещаем изменять размер */
+}
+
+.nvn {
+    width: 100%;
+    background: transparent; /* прозрачность */
+    resize: none; /* Запрещаем изменять размер */
+    border: none; /* убрать рамки */
+    font-size: 20px; /* h4 */
+    font-weight: bolder
+}
+
+.inf1 {
+    font-size: small
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/notes.css">
+
+    <title>Заметки</title>
+</head>
+
+<body>
+
+<div th:replace="fragments/navigation :: navigation"></div>
+
+<main>
+
+    <h4 class="text-center pt-3">Заметки</h4>
+
+    <div class="container-fluid pt-3">
+
+        <div id="notes">
+            <div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#add-note">Добавить заметку
+                </button>
+            </div>
+            <div class="row row-cols-1 row-cols-lg-4 g-4 pt-3">
+                <div th:each="note : ${notes}">
+
+                    <!-- Карточка -->
+                    <div class="card h-100 bg-light">
+                        <!-- Заголовок карточки -->
+                        <div class="card-header">
+                            <h4 class="card-title text-center my-2"><a th:text="${note.getName()}"></a></h4>
+                        </div>
+                        <!-- Тело карточки -->
+                        <div class="card-body">
+                            <div disabled class="form-control bg-light border-0 cbd"
+                                 th:text="${note.getDescription()}"></div>
+                        </div>
+                        <!-- Подвал карточки -->
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col">
+                                    <form th:method="GET" th:action="@{/notes/{id}(id=${note.getId()})}">
+                                        <button type="submit" class="btn btn-primary btn-sm float-start">Открыть</button>
+                                    </form>
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-danger btn-sm float-end"
+                                            th:data-bs-category-id="${categoryId}"
+                                            th:data-bs-note-id="${note.getId()}"
+                                            data-bs-toggle="modal" data-bs-target="#del-note">Удалить
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Модальное окно для добавления новой заметки -->
+<div class="modal fade" id="add-note" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Новая заметка</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-add-note">
+                    <div class="mb-3">
+                        <label for="note-name" class="col-form-label">Имя:</label>
+                        <input type="text" class="form-control" id="note-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="note-description" class="col-form-label">Описание:</label>
+                        <textarea class="form-control" id="note-description" rows="12"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" data-bs-dismiss="modal" class="btn btn-primary" th:category-id="${categoryId}"
+                        onclick="addNote(this.getAttribute('category-id'))">Добавить заметку
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Подтверждение удаления заметки -->
+<div class="modal fade" id="del-note" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <h4>Подтверждение удаления заметки</h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button name="del" class="btn btn-danger float-end" data-bs-dismiss="modal"
+                        onclick="deleteNote(this.getAttribute('note-id'), this.getAttribute('category-id'))">Удалить
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end -->
+
+</body>
+
+<script type="text/javascript" src="/webjars/axios/1.3.4/dist/axios.min.js"></script>
+<script type="text/javascript" src="/webjars/jquery/3.6.3/jquery.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/notes.js"></script>

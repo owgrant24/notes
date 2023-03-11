@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.3/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/index.css">
+
+    <title>Главная</title>
+</head>
+
+<body>
+
+<div th:replace="fragments/navigation :: navigation"></div>
+
+<main>
+
+    <h4 class="text-center pt-3">Все категории</h4>
+
+    <div class="container pt-3">
+        <form id="add-category">
+            <div class="row gy-2">
+                <div class="col-xxl-5">
+                    <input id="new-category-name" class="form-control" required autocomplete="off"
+                           placeholder="Название категории"/>
+                </div>
+                <div class="col-xxl-5">
+                    <input id="new-category-description" class="form-control" autocomplete="off"
+                           placeholder="Описание категории"/>
+                </div>
+                <div class="col-xxl-2">
+                    <button type="submit" class="btn btn-primary bac">Добавить категорию</button>
+                </div>
+            </div>
+        </form>
+
+        <div id="categories">
+           <div class="row row-cols-1 row-cols-lg-3 g-4 pt-5">
+                <div th:each="category : ${categories}">
+
+                    <!-- Карточка -->
+                    <div class="card h-100 bg-light">
+                        <!-- Заголовок карточки -->
+                        <div class="card-header">
+                            <h4 class="card-title text-center my-2"><a th:text="${category.getName()}"></a></h4>
+                        </div>
+                        <!-- Тело карточки -->
+                        <div class="card-body">
+                            <p class="card-text text-center pt-3 pb-3" th:text="${category.getDescription()}"></p>
+                        </div>
+
+                        <!-- Подвал карточки -->
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col">
+                                    <form th:method="GET" th:action="@{/notes/categories/{id}(id=${category.getId()})}">
+                                        <button type="submit" class="btn btn-primary btn-sm">Открыть</button>
+                                    </form>
+                                </div>
+                                <div class="col">
+                                    <div class="btn-group float-end">
+                                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">Дополнительно
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <form th:method="GET"
+                                                      th:action="@{/categories/{id}(id=${category.getId()})}">
+                                                    <button type="submit" class="dropdown-item">Редактировать</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <button class="dropdown-item" type="button"
+                                                        th:data-bs-category-id="${category.getId()}"
+                                                        data-bs-toggle="modal" data-bs-target="#del-category">Удалить
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Подтверждение удаления категории -->
+<div class="modal fade" id="del-category" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <h4>Подтверждение удаления категории</h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button name="del" class="btn btn-danger float-end" data-bs-dismiss="modal"
+                        onclick="deleteCategory(this.getAttribute('category-id'))">Удалить
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end -->
+
+</body>
+
+<script type="text/javascript" src="/webjars/axios/1.3.4/dist/axios.min.js"></script>
+<script type="text/javascript" src="/webjars/jquery/3.6.3/jquery.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
