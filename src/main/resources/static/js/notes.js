@@ -1,4 +1,4 @@
-function addNote(categoryId) {
+function addNote(categoryId, pageNumber) {
     let name = document.getElementById("note-name").value;
     let description = document.getElementById("note-description").value;
 
@@ -14,7 +14,7 @@ function addNote(categoryId) {
     })
         .then(function () {
             $('#form-add-note').trigger('reset');
-            $("#notes").load(`/notes/categories/${categoryId} #notes`);
+            updatePartPage(categoryId, pageNumber);
         })
         .catch((err) => console.log(err.message));
 }
@@ -32,10 +32,15 @@ delNote.addEventListener('show.bs.modal', event => {
     element.setAttribute("note-id", noteId)
 })
 
-function deleteNote(id, categoryId) {
+function deleteNote(id, categoryId, pageNumber) {
     axios.delete('/v1/notes/' + id)
         .then(function () {
-            $("#notes").load(`/notes/categories/${categoryId} #notes`);
+            updatePartPage(categoryId, pageNumber);
         })
         .catch((err) => console.log(err.message));
+}
+
+// Обновление части страницы
+function updatePartPage(categoryId, pageNumber) {
+    $("#notes").load(`/notes/categories/${categoryId}/?page=${pageNumber} #notes`);
 }

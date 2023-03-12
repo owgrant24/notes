@@ -2,6 +2,7 @@ package com.example.notes.controller
 
 import com.example.notes.dto.CreateNoteRequest
 import com.example.notes.dto.NoteDto
+import com.example.notes.dto.PageResponse
 import com.example.notes.dto.UpdateNoteRequest
 import com.example.notes.service.NoteService
 import org.springframework.web.bind.annotation.*
@@ -20,7 +21,11 @@ class NoteController(
     fun getAll(): List<NoteDto> = noteService.getNoteAll()
 
     @GetMapping("/categories/{categoryId}")
-    fun getAllByCategoryId(@PathVariable categoryId: Long): List<NoteDto> = noteService.getAllByCategoryId(categoryId)
+    fun getAllByCategoryId(
+        @PathVariable categoryId: Long,
+        @RequestParam("page") pageIndex: Int?
+    ): PageResponse<NoteDto> =
+        noteService.getAllByCategoryId(categoryId, pageIndex)
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): NoteDto = noteService.getNote(id)

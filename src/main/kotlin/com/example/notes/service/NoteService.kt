@@ -5,12 +5,16 @@ import com.example.notes.db.repository.CategoryRepository
 import com.example.notes.db.repository.NoteRepository
 import com.example.notes.dto.CreateNoteRequest
 import com.example.notes.dto.NoteDto
+import com.example.notes.dto.PageResponse
 import com.example.notes.dto.UpdateNoteRequest
 import com.example.notes.exception.AppException
 import com.example.notes.mapper.NoteMapper
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+
+private const val PAGE_SIZE = 12
 
 @Service
 class NoteService(
@@ -35,9 +39,15 @@ class NoteService(
     }
 
     @Transactional
-    fun getAllByCategoryId(categoryId: Long): List<NoteDto> {
-        val notes = noteRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC,"id"))
-        return notes.map { note -> noteMapper.mapToNoteDto(note) }
+    fun getAllByCategoryId(categoryId: Long, pageIndex: Int?): PageResponse<NoteDto> {
+        var pageNumber: Int = pageIndex ?: 1
+        if (pageNumber < 1) {
+            pageNumber = 1
+        }
+        val pageRequest = PageRequest.of(pageNumber - 1, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "id"))
+        val page = noteRepository.findByCategoryId(categoryId, pageRequest)
+            .map { note -> noteMapper.mapToNoteDto(note) }
+        return PageResponse.from(page)
     }
 
     @Transactional
