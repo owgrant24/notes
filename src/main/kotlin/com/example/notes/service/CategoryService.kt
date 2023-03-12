@@ -6,9 +6,13 @@ import com.example.notes.dto.CreateCategoryRequest
 import com.example.notes.dto.UpdateCategoryRequest
 import com.example.notes.exception.AppException
 import com.example.notes.mapper.CategoryMapper
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
+
+private const val PAGE_SIZE = 9
 
 @Service
 class CategoryService(
@@ -24,8 +28,13 @@ class CategoryService(
     }
 
     @Transactional
-    fun getCategories(): List<CategoryDto> {
-        return categoryRepository.findAll(Sort.by(Sort.Direction.ASC,"id"))
+    fun getCategories(pageIndex: Int?): Page<CategoryDto> {
+        var page: Int = pageIndex ?: 1
+        if (page < 1) {
+            page = 1
+        }
+        val pageRequest = PageRequest.of(page - 1, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "id"))
+        return categoryRepository.findAll(pageRequest)
             .map { category -> categoryMapper.mapToCategoryDto(category) }
     }
 
