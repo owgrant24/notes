@@ -6,6 +6,7 @@ import com.example.notes.dto.CreateCategoryRequest
 import com.example.notes.dto.UpdateCategoryRequest
 import com.example.notes.exception.AppException
 import com.example.notes.mapper.CategoryMapper
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,7 +25,7 @@ class CategoryService(
 
     @Transactional
     fun getCategories(): List<CategoryDto> {
-        return categoryRepository.findAll()
+        return categoryRepository.findAll(Sort.by(Sort.Direction.ASC,"id"))
             .map { category -> categoryMapper.mapToCategoryDto(category) }
     }
 

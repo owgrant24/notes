@@ -8,6 +8,7 @@ import com.example.notes.dto.NoteDto
 import com.example.notes.dto.UpdateNoteRequest
 import com.example.notes.exception.AppException
 import com.example.notes.mapper.NoteMapper
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -29,13 +30,13 @@ class NoteService(
 
     @Transactional
     fun getNoteAll(): List<NoteDto> {
-        return noteRepository.findAll()
+        return noteRepository.findAll(Sort.by(Sort.Direction.ASC,"id"))
             .map { note -> noteMapper.mapToNoteDto(note) }
     }
 
     @Transactional
     fun getAllByCategoryId(categoryId: Long): List<NoteDto> {
-        val notes = noteRepository.findNotesByCategoryId(categoryId)
+        val notes = noteRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC,"id"))
         return notes.map { note -> noteMapper.mapToNoteDto(note) }
     }
 
