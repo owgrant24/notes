@@ -23,8 +23,14 @@ class FrontController(
     }
 
     @GetMapping("/notes/categories/{id}")
-    fun getNotesByCategoryId(model: Model, @PathVariable("id") id: Long): String {
-        model.addAttribute("notes", noteService.getAllByCategoryId(id))
+    fun getNotesByCategoryId(
+        model: Model,
+        @PathVariable("id") id: Long,
+        @RequestParam("page") pageIndex: Int?
+    ): String {
+        val notes = noteService.getAllByCategoryId(id, pageIndex)
+        model.addAttribute("notes", notes.content)
+        model.addAttribute("page", notes)
         model.addAttribute("categoryId", id)
         return "notes"
     }
