@@ -8,9 +8,13 @@ import com.example.notes.dto.NoteDto
 import com.example.notes.dto.UpdateNoteRequest
 import com.example.notes.exception.AppException
 import com.example.notes.mapper.NoteMapper
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
+
+private const val PAGE_SIZE = 6
 
 @Service
 class NoteService(
@@ -35,8 +39,13 @@ class NoteService(
     }
 
     @Transactional
-    fun getAllByCategoryId(categoryId: Long): List<NoteDto> {
-        val notes = noteRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC,"id"))
+    fun getAllByCategoryId(categoryId: Long, pageIndex: Int?): Page<NoteDto> {
+        var page: Int = pageIndex ?: 1
+        if (page < 1) {
+            page = 1
+        }
+        val pageRequest = PageRequest.of(page - 1, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "id"))
+        val notes = noteRepository.findByCategoryId(categoryId, pageRequest)
         return notes.map { note -> noteMapper.mapToNoteDto(note) }
     }
 
