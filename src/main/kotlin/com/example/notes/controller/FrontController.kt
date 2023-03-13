@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 class FrontController(
@@ -14,8 +15,10 @@ class FrontController(
 ) {
 
     @GetMapping
-    fun getAll(model: Model): String {
-        model.addAttribute("categories", categoryService.getCategories())
+    fun getAll(model: Model, @RequestParam("page") pageIndex: Int?): String {
+        val categories = categoryService.getCategories(pageIndex)
+        model.addAttribute("categories", categories.content)
+        model.addAttribute("page", categories)
         return "index"
     }
 

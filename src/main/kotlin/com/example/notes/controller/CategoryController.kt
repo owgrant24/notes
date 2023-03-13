@@ -2,6 +2,7 @@ package com.example.notes.controller
 
 import com.example.notes.dto.*
 import com.example.notes.service.CategoryService
+import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -15,7 +16,7 @@ class CategoryController(
     fun create(@Valid @RequestBody dto: CreateCategoryRequest): Long = categoryService.create(dto)
 
     @GetMapping
-    fun getAll(): List<CategoryDto> = categoryService.getCategories()
+    fun getAll(@RequestParam("page") pageIndex: Int?): Page<CategoryDto> = categoryService.getCategories(pageIndex)
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): CategoryDto = categoryService.getCategory(id)

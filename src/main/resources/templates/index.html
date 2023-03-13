@@ -19,8 +19,8 @@
 
     <h4 class="text-center pt-3">Все категории</h4>
 
-    <div class="container pt-5">
-        <form id="add-category">
+    <div class="container pt-3">
+        <form id="add-category" th:pageNumber="${page.getNumber() + 1}">
             <div class="row gy-2">
                 <div class="col-xxl-5">
                     <input id="new-category-name" class="form-control" required autocomplete="off"
@@ -37,7 +37,38 @@
         </form>
 
         <div id="categories">
-           <div class="row row-cols-1 row-cols-md-3 g-4 pt-5">
+            <!-- Пагинация -->
+            <div class="d-flex justify-content-end pt-3">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${page.isFirst() ? 'disabled' : ''}">
+                            <a class="page-link" aria-label="Previous"
+                               th:href="@{'/?page='+ ${page.previousOrFirstPageable().getPageNumber() + 1}}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${page.getNumber() + 1 == i ? 'active' : ''}"
+                            th:each="i : ${#numbers.sequence(
+                        (page.getNumber() + 1 > 2 ? page.getNumber() - 1 : 1),
+                        (page.getNumber() + 3 < page.getTotalPages() ? page.getNumber() + 3 : (page.getTotalPages() == 0 ? 1 : page.getTotalPages()))
+                        )}">
+                            <a class="page-link" th:text="${i}" th:href="@{'/?page=' + ${i} }"></a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${page.isLast() ? 'disabled' : ''}">
+                            <a class="page-link" aria-label="Next"
+                               th:href="@{'/?page='+ ${page.nextOrLastPageable().getPageNumber() + 1}}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- end -->
+
+            <!-- Блок категорий -->
+            <div class="row row-cols-1 row-cols-md-3 g-4 pt-2">
                 <div th:each="category : ${categories}">
 
                     <!-- Карточка -->
@@ -104,7 +135,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                 <button name="del" class="btn btn-danger float-end" data-bs-dismiss="modal"
-                        onclick="deleteCategory(this.getAttribute('category-id'))">Удалить
+                        th:pageNumber="${page.getNumber() + 1}"
+                        onclick="deleteCategory(this.getAttribute('category-id'), this.getAttribute('pageNumber'))">Удалить
                 </button>
             </div>
         </div>
