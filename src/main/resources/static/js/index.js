@@ -4,13 +4,14 @@ addCategoryForm.addEventListener("submit", (e) => {
 
     let name = document.getElementById("new-category-name").value;
     let description = document.getElementById("new-category-description").value;
+    let pageNumber = addCategoryForm.getAttribute('page-number');
 
     axios.post('/v1/categories/', {
         name: name, description: description
     })
         .then(function () {
             $('#add-category').trigger('reset');
-            $("#categories").load("/ #categories");
+            updatePartPage(pageNumber);
         })
         .catch((err) => console.log(err.message));
 });
@@ -26,10 +27,15 @@ delCategory.addEventListener('show.bs.modal', event => {
     element.setAttribute("category-id", catId)
 })
 
-function deleteCategory(id) {
+function deleteCategory(id, pageNumber) {
     axios.delete('/v1/categories/' + id)
         .then(function () {
-            $("#categories").load("/ #categories");
+            updatePartPage(pageNumber);
         })
         .catch((err) => console.log(err.message));
+}
+
+// Обновление части страницы
+function updatePartPage(pageNumber) {
+    $("#categories").load(`/?page=${pageNumber} #categories`);
 }

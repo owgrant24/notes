@@ -1,11 +1,14 @@
 package com.example.notes.controller
 
+import com.example.notes.dto.CategoryDto
+import com.example.notes.dto.PageResponse
 import com.example.notes.service.CategoryService
 import com.example.notes.service.NoteService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 class FrontController(
@@ -14,8 +17,9 @@ class FrontController(
 ) {
 
     @GetMapping
-    fun getAll(model: Model): String {
-        model.addAttribute("categories", categoryService.getCategories())
+    fun getAll(model: Model, @RequestParam("page") pageIndex: Int?): String {
+        val page: PageResponse<CategoryDto> = categoryService.getCategories(pageIndex)
+        model.addAttribute("page", page)
         return "index"
     }
 

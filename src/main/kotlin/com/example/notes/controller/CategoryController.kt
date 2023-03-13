@@ -15,7 +15,8 @@ class CategoryController(
     fun create(@Valid @RequestBody dto: CreateCategoryRequest): Long = categoryService.create(dto)
 
     @GetMapping
-    fun getAll(): List<CategoryDto> = categoryService.getCategories()
+    fun getAll(@RequestParam("page") pageIndex: Int?): PageResponse<CategoryDto> =
+        categoryService.getCategories(pageIndex)
 
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): CategoryDto = categoryService.getCategory(id)

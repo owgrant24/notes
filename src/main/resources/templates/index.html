@@ -12,7 +12,7 @@
     <title>Главная</title>
 </head>
 
-<body>
+<body th:with="pageData=${page.data}, pageNumber=${pageData.pageNumber}, totalPages=${pageData.totalPages}">
 
 <div th:replace="fragments/navigation :: navigation"></div>
 
@@ -21,7 +21,7 @@
     <h4 class="text-center pt-3">Все категории</h4>
 
     <div class="container pt-3">
-        <form id="add-category">
+        <form id="add-category" th:page-number="${pageNumber + 1}">
             <div class="row gy-2">
                 <div class="col-xxl-5">
                     <input id="new-category-name" class="form-control" required autocomplete="off"
@@ -38,8 +38,37 @@
         </form>
 
         <div id="categories">
-           <div class="row row-cols-1 row-cols-lg-3 g-4 pt-5">
-                <div th:each="category : ${categories}">
+            <!-- Пагинация -->
+            <div class="d-flex justify-content-end pt-3">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${pageData.isFirstPage ? 'disabled' : ''}">
+                            <a class="page-link" aria-label="Previous"
+                               th:href="@{'/?page='+ ${pageData.previousOrFirstPageNumber + 1}}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${pageNumber + 1 == i ? 'active' : ''}"
+                            th:each="i : ${#numbers.sequence((pageNumber + 1 > 2 ? pageNumber - 1 : 1),
+                                     (pageNumber + 3 < totalPages ? pageNumber + 3 : (totalPages == 0 ? 1 : totalPages)))}">
+                            <a class="page-link" th:text="${i}" th:href="@{'/?page=' + ${i}}"></a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${pageData.isLastPage ? 'disabled' : ''}">
+                            <a class="page-link" aria-label="Next"
+                               th:href="@{'/?page='+ ${pageData.nextOrLastPageNumber + 1}}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- end -->
+
+            <!-- Блок категорий -->
+            <div class="row row-cols-1 row-cols-lg-3 g-4 pt-2">
+                <div th:each="category : ${page.getContent()}">
 
                     <!-- Карточка -->
                     <div class="card h-100 bg-light">
@@ -105,7 +134,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                 <button name="del" class="btn btn-danger float-end" data-bs-dismiss="modal"
-                        onclick="deleteCategory(this.getAttribute('category-id'))">Удалить
+                        th:page-number="${pageNumber + 1}"
+                        onclick="deleteCategory(this.getAttribute('category-id'), this.getAttribute('page-number'))">Удалить
                 </button>
             </div>
         </div>

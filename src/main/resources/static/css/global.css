@@ -17,3 +17,8 @@ body {
     background-color: #f6837a;
     border-color: #f6837a;
 }
+
+.pagination > .active > a {
+    background-color: #7498bd;
+    border: solid 1px #7498bd;
+}
