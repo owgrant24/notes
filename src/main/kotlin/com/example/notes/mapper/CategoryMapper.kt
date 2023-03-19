@@ -4,6 +4,7 @@ import com.example.notes.db.entity.Category
 import com.example.notes.dto.CategoryDto
 import com.example.notes.dto.CreateCategoryRequest
 import com.example.notes.exception.AppException
+import com.example.notes.util.DATE_TIME_FORMATTER
 import org.springframework.stereotype.Component
 
 @Component
@@ -18,6 +19,8 @@ class CategoryMapper {
 
     fun mapToCategoryDto(category: Category): CategoryDto {
         val id = category.id ?: throw AppException("Invalid data")
-        return CategoryDto(id, category.createdAt, category.updatedAt, category.name, category.description)
+        val createdAt = DATE_TIME_FORMATTER.format(category.createdAt)
+        val updatedAt = DATE_TIME_FORMATTER.format(category.updatedAt)
+        return CategoryDto(id, createdAt, updatedAt, category.name, category.description)
     }
 }
