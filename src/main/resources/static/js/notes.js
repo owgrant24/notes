@@ -1,6 +1,5 @@
 function addNote(categoryId, pageNumber) {
     let name = document.getElementById("note-name").value;
-    let description = document.getElementById("note-description").value;
 
     if (name.length === 0) {
         alert("Поле 'Имя' не заполнено. Заметка не сохранена")
@@ -9,7 +8,6 @@ function addNote(categoryId, pageNumber) {
 
     axios.post('/v1/notes/', {
         name: name,
-        description: description,
         categoryId: categoryId
     })
         .then(function () {

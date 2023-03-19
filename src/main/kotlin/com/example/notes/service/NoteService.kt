@@ -14,7 +14,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-private const val PAGE_SIZE = 12
+private const val PAGE_SIZE = 15
 
 @Service
 class NoteService(

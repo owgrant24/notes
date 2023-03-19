@@ -1,8 +1,3 @@
 .cbd {
-    white-space: pre-line;
-    margin: 0; /* Убираем внешний отступ */
-    -webkit-line-clamp: 2; /* Число отображаемых строк */
-    display: -webkit-box; /* Включаем флексбоксы */
-    -webkit-box-orient: vertical; /* Вертикальная ориентация */
-    overflow: hidden; /* Обрезаем всё за пределами блока */
+    background: lightsteelblue;
 }

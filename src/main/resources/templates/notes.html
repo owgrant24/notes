@@ -20,7 +20,7 @@
 
     <h4 class="text-center pt-3">Заметки</h4>
 
-    <div class="container-fluid pt-3">
+    <div class="container pt-3">
 
         <div id="notes">
             <div class="row pt-3">
@@ -60,19 +60,14 @@
                 <!-- end -->
             </div>
 
-            <div class="row row-cols-1 row-cols-lg-4 g-4 pt-3">
+            <div class="row row-cols-1 row-cols-lg-3 g-4 pt-3">
                 <div th:each="note : ${page.content}">
 
                     <!-- Карточка -->
-                    <div class="card h-100 bg-light">
-                        <!-- Заголовок карточки -->
-                        <div class="card-header">
-                            <h4 class="card-title text-center my-2"><a th:text="${note.getName()}"></a></h4>
-                        </div>
+                    <div class="card bg-light">
                         <!-- Тело карточки -->
-                        <div class="card-body">
-                            <div disabled class="form-control bg-light border-0 cbd"
-                                 th:text="${note.getDescription()}"></div>
+                        <div class="card-header border-0 cbd">
+                            <p class="card-title text-center my-2"><a th:text="${note.getName()}"></a></p>
                         </div>
                         <!-- Подвал карточки -->
                         <div class="card-footer">
@@ -102,7 +97,7 @@
 
 <!-- Модальное окно для добавления новой заметки -->
 <div class="modal fade" id="add-note" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-5">Новая заметка</h1>
@@ -113,10 +108,6 @@
                     <div class="mb-3">
                         <label for="note-name" class="col-form-label">Имя:</label>
                         <input type="text" class="form-control" id="note-name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="note-description" class="col-form-label">Описание:</label>
-                        <textarea class="form-control" id="note-description" rows="12"></textarea>
                     </div>
                 </form>
             </div>
