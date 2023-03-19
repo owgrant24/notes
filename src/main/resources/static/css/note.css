@@ -1,3 +1,19 @@
+:root {
+    --ck-sample-editor-min-height: 400px;
+}
+
+.editor__editable,
+    /* Classic build. */
+main .ck-editor .ck.ck-content,
+    /* Decoupled document build. */
+.ck.editor__editable,
+.ck.ck-editor__editable,
+    /* Inline & Balloon build. */
+.ck.editor {
+    width: 100%;
+    min-height: var(--ck-sample-editor-min-height);
+}
+
 .nvt {
     height: 80vh;
     resize: none; /* Запрещаем изменять размер */
@@ -14,4 +30,8 @@
 
 .inf1 {
     font-size: small
+}
+
+.btn {
+    margin-: initial;
 }

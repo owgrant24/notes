@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/note.css">
 
+    <script src="/js/ckeditor.js"></script>
+
     <title>Заметка</title>
 </head>
 
@@ -21,30 +23,38 @@
     <div class="container pt-3">
         <div id="info-note">
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-xxl-4">
                     <div class="text-muted inf1" th:text="'Публичный идентификатор: ' + ${note.getId()}"/>
                     <div class="text-muted inf1" th:text="'Дата и время создания: ' + ${note.getCreatedAt()}"/>
                     <div class="text-muted inf1" th:text="'Дата и время обновления: ' + ${note.getUpdatedAt()}"/>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-xxl-8">
                     <div id="note">
                         <textarea id="name-note" class="text-center nvn"
                                   th:text="${note.getName()}">Заметка
                         </textarea>
                     </div>
                 </div>
-                <div class="col-sm-1">
-                    <button type="button" class="btn btn-primary btn-sm float-end"
-                            data-bs-toggle="modal" data-bs-target="#save-note">Сохранить
-                    </button>
-                </div>
-
             </div>
         </div>
-
-        <label for="content-note"></label>
-        <textarea id="content-note" class="form-control bg-light border-0 nvt" th:text="${note.getDescription()}">
-        </textarea>
+        <div style="margin-top: 10px">
+            <button type="button" class="btn btn-primary btn-sm"
+                    data-bs-toggle="modal" data-bs-target="#save-note">Сохранить
+            </button>
+            <button type="button" class="btn btn-primary btn-sm"
+                    onclick="changeReadOnlyStatus()">Редактировать
+            </button>
+        </div>
+        <div class="centered">
+            <div class="row row-editor">
+                <div class="editor-container">
+                    <label for="content-note"></label>
+                    <textarea id="content-note" class="editor ck-editor__editable_inline read nvt"
+                              th:text="${note.getDescription()}">
+                    </textarea>
+                </div>
+            </div>
+        </div>
     </div>
 
 </main>
