@@ -32,13 +32,13 @@ class NoteService(
         return note.id ?: throw AppException("Invalid data")
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getNoteAll(): List<NoteDto> {
         return noteRepository.findAll(Sort.by(Sort.Direction.ASC,"id"))
             .map { note -> noteMapper.mapToNoteDto(note) }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getAllByCategoryId(categoryId: Long, pageIndex: Int?): PageResponse<NoteDto> {
         var pageNumber: Int = pageIndex ?: 1
         if (pageNumber < 1) {
@@ -50,7 +50,7 @@ class NoteService(
         return PageResponse.from(page)
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getNote(id: Long): NoteDto {
         val note = noteRepository.getReferenceById(id)
         return noteMapper.mapToNoteDto(note)

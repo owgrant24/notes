@@ -20,7 +20,8 @@ class Note {
     var updatedAt: LocalDateTime = LocalDateTime.now()
     var name: String = ""
     var description: String? = null
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH])
+    @ManyToOne(fetch = FetchType.LAZY,
+        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH])
     @JoinColumn(name = "category_id")
     var category: Category? = null
 

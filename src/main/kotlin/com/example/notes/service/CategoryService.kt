@@ -27,7 +27,7 @@ class CategoryService(
         return category.id ?: throw AppException("Invalid data")
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getCategories(pageIndex: Int?): PageResponse<CategoryDto> {
         var pageNumber: Int = pageIndex ?: 1
         if (pageNumber < 1) {
@@ -39,7 +39,7 @@ class CategoryService(
         return PageResponse.from(page);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getCategory(id: Long): CategoryDto {
         val category = categoryRepository.getReferenceById(id)
         return categoryMapper.mapToCategoryDto(category)
