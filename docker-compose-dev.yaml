@@ -2,9 +2,9 @@ version: "3.9"
 
 services:
   #   https://hub.docker.com/_/postgres
-  postgres:
-    image: postgres:13-alpine
-    container_name: postgres
+  database:
+    image: postgres:13.12-alpine3.18
+    container_name: notes-db
     hostname: postgres
     ports:
       - "5432:5432"

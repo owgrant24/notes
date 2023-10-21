@@ -7,9 +7,9 @@ services:
     ports:
       - "8090:8090"
     depends_on:
-      - postgres
+      - database
     links:
-      - postgres
+      - database
     networks:
       - bridged_network
     environment:
@@ -17,9 +17,9 @@ services:
       DB_USERNAME: 'postgres'
       DB_PASSWORD: 'postgres'
   #   https://hub.docker.com/_/postgres
-  postgres:
-    image: postgres:13-alpine
-    container_name: postgres
+  database:
+    image: postgres:13.12-alpine3.18
+    container_name: notes-db
     hostname: postgres
     ports:
       - "5432:5432"
