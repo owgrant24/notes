@@ -12,7 +12,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-private const val PAGE_SIZE = 9
+private const val PAGE_SIZE = 12
 
 @Service
 class CategoryService(
@@ -35,8 +35,8 @@ class CategoryService(
         }
         val pageRequest = PageRequest.of(pageNumber - 1, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "id"))
         val page = categoryRepository.findAll(pageRequest)
-            .map { category -> categoryMapper.mapToCategoryDto(category) }
-        return PageResponse.from(page);
+            .map(categoryMapper::mapToCategoryDto)
+        return PageResponse.from(page)
     }
 
     @Transactional(readOnly = true)
