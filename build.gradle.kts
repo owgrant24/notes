@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.7.9"
-	id("io.spring.dependency-management") version "1.0.15.RELEASE"
-	kotlin("jvm") version "1.6.21"
-	kotlin("plugin.spring") version "1.6.21"
-	kotlin("plugin.jpa") version "1.6.21"
-	kotlin("plugin.allopen") version "1.6.21"
+	id("org.springframework.boot") version "3.1.6"
+	id("io.spring.dependency-management") version "1.1.4"
+	kotlin("jvm") version "1.8.22"
+	kotlin("plugin.spring") version "1.8.22"
+	kotlin("plugin.jpa") version "1.8.22"
+	kotlin("plugin.allopen") version "1.8.22"
 }
 
 group = "com.example"
@@ -52,5 +52,5 @@ tasks {
 }
 
 allOpen {
-	annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass", "javax.persistence.Embeddable")
+	annotations("jakarta.persistence.Entity", "jakarta.persistence.MappedSuperclass", "jakarta.persistence.Embeddable")
 }

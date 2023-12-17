@@ -14,7 +14,7 @@
 
 <body th:with="pageData=${page.data}, pageNumber=${pageData.pageNumber}, totalPages=${pageData.totalPages}">
 
-<div th:replace="fragments/navigation :: navigation"></div>
+<div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <main>
 

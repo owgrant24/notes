@@ -6,7 +6,7 @@ import com.example.notes.category.dto.UpdateCategoryRequest
 import com.example.notes.common.dto.*
 import com.example.notes.category.service.CategoryService
 import org.springframework.web.bind.annotation.*
-import javax.validation.Valid
+import jakarta.validation.Valid
 
 @RestController
 @RequestMapping("/v1/categories")

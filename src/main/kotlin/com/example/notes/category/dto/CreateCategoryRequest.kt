@@ -1,6 +1,6 @@
 package com.example.notes.category.dto
 
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 data class CreateCategoryRequest(
     @field:NotBlank
