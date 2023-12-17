@@ -6,7 +6,7 @@ addCategoryForm.addEventListener("submit", (e) => {
     let description = document.getElementById("new-category-description").value;
     let pageNumber = addCategoryForm.getAttribute('page-number');
 
-    axios.post('/v1/categories/', {
+    axios.post('/v1/categories', {
         name: name, description: description
     })
         .then(function () {
@@ -37,5 +37,5 @@ function deleteCategory(id, pageNumber) {
 
 // Обновление части страницы
 function updatePartPage(pageNumber) {
-    $("#categories").load(`/?page=${pageNumber} #categories`);
+    $("#categories").load(`?page=${pageNumber} #categories`);
 }

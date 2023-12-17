@@ -36,7 +36,7 @@
                         <ul class="pagination float-end">
                             <li class="page-item" th:classappend="${pageData.isFirstPage ? 'disabled' : ''}">
                                 <a class="page-link" aria-label="Previous"
-                                   th:href="@{'/?page='+ ${pageData.previousOrFirstPageNumber + 1}}">
+                                   th:href="@{'/notes/categories/' + ${categoryId} + '?page='+ ${pageData.previousOrFirstPageNumber + 1}}">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -45,12 +45,12 @@
                                 th:each="i : ${#numbers.sequence((pageNumber + 1 > 2 ? pageNumber - 1 : 1),
                                      (pageNumber + 3 < totalPages ? pageNumber + 3 : (totalPages == 0 ? 1 : totalPages)))}">
                                 <a class="page-link" th:text="${i}"
-                                   th:href="@{'/notes/categories/' + ${categoryId} + '/?page=' + ${i} }"></a>
+                                   th:href="@{'/notes/categories/' + ${categoryId} + '?page=' + ${i} }"></a>
                             </li>
 
                             <li class="page-item" th:classappend="${pageData.isLastPage ? 'disabled' : ''}">
                                 <a class="page-link" aria-label="Next"
-                                   th:href="@{'/notes/categories/' + ${categoryId} + '/?page='+ ${pageData.nextOrLastPageNumber + 1}}">
+                                   th:href="@{'/notes/categories/' + ${categoryId} + '?page='+ ${pageData.nextOrLastPageNumber + 1}}">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>

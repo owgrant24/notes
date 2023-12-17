@@ -6,7 +6,7 @@ function addNote(categoryId, pageNumber) {
         return
     }
 
-    axios.post('/v1/notes/', {
+    axios.post('/v1/notes', {
         name: name,
         categoryId: categoryId
     })
@@ -40,5 +40,5 @@ function deleteNote(id, categoryId, pageNumber) {
 
 // Обновление части страницы
 function updatePartPage(categoryId, pageNumber) {
-    $("#notes").load(`/notes/categories/${categoryId}/?page=${pageNumber} #notes`);
+    $("#notes").load(`/notes/categories/${categoryId}?page=${pageNumber} #notes`);
 }
