@@ -69,6 +69,11 @@
                         <div class="card-header border-0 cbd">
                             <p class="card-title text-center my-2"><a th:text="${note.getName()}"></a></p>
                         </div>
+                        <!-- Тело карточки -->
+                        <div class="card-body">
+                            <div class="text-muted inf1" th:text="'Дата и время создания: ' + ${note.getCreatedAt()}"/>
+                            <div class="text-muted inf1" th:text="'Дата и время обновления: ' + ${note.getUpdatedAt()}"/>
+                        </div>
                         <!-- Подвал карточки -->
                         <div class="card-footer">
                             <div class="row">
