@@ -1,13 +1,16 @@
 package com.example.notes.note.service
 
-import com.example.notes.core.note.entity.Note
+import com.example.notes.common.dto.PageResponse
+import com.example.notes.common.exception.AppException
 import com.example.notes.core.category.repo.CategoryRepository
+import com.example.notes.core.note.entity.Note
 import com.example.notes.core.note.repo.NoteRepository
+import com.example.notes.core.notehistory.entity.NoteHistory
+import com.example.notes.core.notehistory.entity.Status
+import com.example.notes.core.notehistory.repo.NoteHistoryRepository
 import com.example.notes.note.dto.CreateNoteRequest
 import com.example.notes.note.dto.NoteDto
-import com.example.notes.common.dto.PageResponse
 import com.example.notes.note.dto.UpdateNoteRequest
-import com.example.notes.common.exception.AppException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -19,6 +22,7 @@ private const val PAGE_SIZE = 21
 class NoteService(
         private val noteRepository: NoteRepository,
         private val categoryRepository: CategoryRepository,
+        private val noteHistoryRepository: NoteHistoryRepository,
         private val noteMapper: NoteMapper
 ) {
 
@@ -28,6 +32,7 @@ class NoteService(
         val note: Note = noteMapper.mapToNote(dto)
         note.category = category
         noteRepository.save(note)
+        saveToHistory(note, Status.CREATED)
         return note.id ?: throw AppException("Invalid data")
     }
 
@@ -60,11 +65,22 @@ class NoteService(
         val note = noteRepository.getReferenceById(id)
         note.name = dto.name
         note.description = dto.description
+
+        saveToHistory(note, Status.UPDATED)
         noteRepository.save(note)
     }
 
     @Transactional
     fun delete(id: Long) {
         noteRepository.deleteById(id)
+    }
+
+    private fun saveToHistory(note: Note, status: Status) {
+        val noteHistory = NoteHistory()
+        noteHistory.name = note.name
+        noteHistory.description = note.description
+        noteHistory.note = note
+        noteHistory.status = status
+        noteHistoryRepository.save(noteHistory)
     }
 }
