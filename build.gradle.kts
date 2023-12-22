@@ -30,7 +30,7 @@ dependencies {
 	implementation("org.webjars:bootstrap:5.2.3")
 	implementation("org.webjars.npm:axios:1.6.2")
 	implementation("org.webjars:jquery:3.7.1")
-	implementation("org.webjars.npm:bootstrap-icons:1.10.3")
+	implementation("org.webjars.npm:bootstrap-icons:1.11.2")
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
