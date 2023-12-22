@@ -27,7 +27,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.liquibase:liquibase-core")
 	implementation("io.github.oshai:kotlin-logging-jvm:6.0.1")
-	implementation("org.webjars:bootstrap:5.2.3")
+	implementation("org.webjars:bootstrap:5.3.2")
 	implementation("org.webjars.npm:axios:1.6.2")
 	implementation("org.webjars:jquery:3.7.1")
 	implementation("org.webjars.npm:bootstrap-icons:1.11.2")
