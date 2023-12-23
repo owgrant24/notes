@@ -1,24 +1,24 @@
 package com.example.notes.category.service
 
-import com.example.notes.core.category.repo.CategoryRepository
 import com.example.notes.category.dto.CategoryDto
 import com.example.notes.category.dto.CreateCategoryRequest
-import com.example.notes.common.dto.PageResponse
 import com.example.notes.category.dto.UpdateCategoryRequest
+import com.example.notes.common.dto.PageResponse
 import com.example.notes.common.exception.AppException
 import com.example.notes.core.category.entity.Category
+import com.example.notes.core.category.repo.CategoryRepository
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-private const val PAGE_SIZE = 12
-
 @Service
 class CategoryService(
         private val categoryRepository: CategoryRepository,
-        private val categoryMapper: CategoryMapper
+        private val categoryMapper: CategoryMapper,
+        @Value(value = "\${general.category.page-size}") private val pageSize: Int
 ) {
 
     @Transactional
@@ -34,7 +34,7 @@ class CategoryService(
         if (pageNumber < 1) {
             pageNumber = 1
         }
-        val pageRequest = PageRequest.of(pageNumber - 1, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "id"))
+        val pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"))
         val page: Page<CategoryDto> = categoryRepository.findAll(pageRequest)
                 .map(categoryMapper::mapToCategoryDto)
         return PageResponse.from(page)

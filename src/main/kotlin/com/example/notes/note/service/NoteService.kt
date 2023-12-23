@@ -11,19 +11,19 @@ import com.example.notes.core.notehistory.repo.NoteHistoryRepository
 import com.example.notes.note.dto.CreateNoteRequest
 import com.example.notes.note.dto.NoteDto
 import com.example.notes.note.dto.UpdateNoteRequest
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-
-private const val PAGE_SIZE = 21
 
 @Service
 class NoteService(
         private val noteRepository: NoteRepository,
         private val categoryRepository: CategoryRepository,
         private val noteHistoryRepository: NoteHistoryRepository,
-        private val noteMapper: NoteMapper
+        private val noteMapper: NoteMapper,
+        @Value(value = "\${general.note.page-size}") private val pageSize: Int,
 ) {
 
     @Transactional
@@ -48,7 +48,7 @@ class NoteService(
         if (pageNumber < 1) {
             pageNumber = 1
         }
-        val pageRequest = PageRequest.of(pageNumber - 1, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "id"))
+        val pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"))
         val page = noteRepository.findByCategoryId(categoryId, pageRequest)
             .map { note -> noteMapper.mapToNoteDto(note) }
         return PageResponse.from(page)

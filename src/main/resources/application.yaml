@@ -16,5 +16,12 @@ spring:
   liquibase:
     database-change-log-lock-table: NOTES_DATABASECHANGELOGLOCK
 
+general:
+  note:
+    page-size: ${GENERAL_NOTE_PAGESIZE:15}
+  category:
+    page-size: ${GENERAL_CATEGORY_PAGESIZE:15}
+
+
 
 
