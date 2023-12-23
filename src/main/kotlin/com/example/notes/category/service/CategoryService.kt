@@ -5,6 +5,7 @@ import com.example.notes.category.dto.CreateCategoryRequest
 import com.example.notes.category.dto.UpdateCategoryRequest
 import com.example.notes.common.dto.PageResponse
 import com.example.notes.common.exception.AppException
+import com.example.notes.common.util.definePageNumber
 import com.example.notes.core.category.entity.Category
 import com.example.notes.core.category.repo.CategoryRepository
 import org.springframework.beans.factory.annotation.Value
@@ -30,10 +31,7 @@ class CategoryService(
 
     @Transactional(readOnly = true)
     fun getCategories(pageIndex: Int?): PageResponse<CategoryDto> {
-        var pageNumber: Int = pageIndex ?: 1
-        if (pageNumber < 1) {
-            pageNumber = 1
-        }
+        val pageNumber: Int = definePageNumber(pageIndex)
         val pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"))
         val page: Page<CategoryDto> = categoryRepository.findAll(pageRequest)
                 .map(categoryMapper::mapToCategoryDto)

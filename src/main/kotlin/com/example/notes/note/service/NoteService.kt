@@ -2,6 +2,7 @@ package com.example.notes.note.service
 
 import com.example.notes.common.dto.PageResponse
 import com.example.notes.common.exception.AppException
+import com.example.notes.common.util.definePageNumber
 import com.example.notes.core.category.repo.CategoryRepository
 import com.example.notes.core.note.entity.Note
 import com.example.notes.core.note.repo.NoteRepository
@@ -44,10 +45,7 @@ class NoteService(
 
     @Transactional(readOnly = true)
     fun getAllByCategoryId(categoryId: Long, pageIndex: Int?): PageResponse<NoteDto> {
-        var pageNumber: Int = pageIndex ?: 1
-        if (pageNumber < 1) {
-            pageNumber = 1
-        }
+        val pageNumber: Int = definePageNumber(pageIndex)
         val pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"))
         val page = noteRepository.findByCategoryId(categoryId, pageRequest)
             .map { note -> noteMapper.mapToNoteDto(note) }
