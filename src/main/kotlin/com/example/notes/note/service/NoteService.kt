@@ -3,6 +3,7 @@ package com.example.notes.note.service
 import com.example.notes.common.dto.PageResponse
 import com.example.notes.common.exception.AppException
 import com.example.notes.common.util.definePageNumber
+import com.example.notes.core.category.entity.Category
 import com.example.notes.core.category.repo.CategoryRepository
 import com.example.notes.core.note.entity.Note
 import com.example.notes.core.note.repo.NoteRepository
@@ -13,6 +14,7 @@ import com.example.notes.note.dto.CreateNoteRequest
 import com.example.notes.note.dto.NoteDto
 import com.example.notes.note.dto.UpdateNoteRequest
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
@@ -29,7 +31,7 @@ class NoteService(
 
     @Transactional
     fun create(dto: CreateNoteRequest): Long {
-        val category = categoryRepository.getReferenceById(dto.categoryId!!)
+        val category: Category = categoryRepository.getReferenceById(dto.categoryId!!)
         val note: Note = noteMapper.mapToNote(dto)
         note.category = category
         noteRepository.save(note)
@@ -47,20 +49,20 @@ class NoteService(
     fun getAllByCategoryId(categoryId: Long, pageIndex: Int?): PageResponse<NoteDto> {
         val pageNumber: Int = definePageNumber(pageIndex)
         val pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"))
-        val page = noteRepository.findByCategoryId(categoryId, pageRequest)
+        val page: Page<NoteDto> = noteRepository.findByCategoryId(categoryId, pageRequest)
             .map { note -> noteMapper.mapToNoteDto(note) }
         return PageResponse.from(page)
     }
 
     @Transactional(readOnly = true)
     fun getNote(id: Long): NoteDto {
-        val note = noteRepository.getReferenceById(id)
+        val note: Note = noteRepository.getReferenceById(id)
         return noteMapper.mapToNoteDto(note)
     }
 
     @Transactional
     fun update(id: Long, dto: UpdateNoteRequest) {
-        val note = noteRepository.getReferenceById(id)
+        val note: Note = noteRepository.getReferenceById(id)
         note.name = dto.name
         note.description = dto.description
 
