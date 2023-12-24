@@ -40,13 +40,15 @@ class CategoryService(
 
     @Transactional(readOnly = true)
     fun getCategory(id: Long): CategoryDto {
-        val category: Category = categoryRepository.getReferenceById(id)
+        val category: Category = categoryRepository.findById(id)
+                .orElseThrow { AppException("Category with id: $id not found") }
         return categoryMapper.mapToCategoryDto(category)
     }
 
     @Transactional
     fun update(id: Long, dto: UpdateCategoryRequest) {
-        val category: Category = categoryRepository.getReferenceById(id)
+        val category: Category = categoryRepository.findById(id)
+                .orElseThrow { AppException("Category with id: $id not found") }
         category.name = dto.name
         category.description = dto.description
         categoryRepository.save(category)

@@ -31,7 +31,9 @@ class NoteService(
 
     @Transactional
     fun create(dto: CreateNoteRequest): Long {
-        val category: Category = categoryRepository.getReferenceById(dto.categoryId!!)
+        val categoryId = dto.categoryId!!
+        val category: Category = categoryRepository.findById(categoryId)
+                .orElseThrow { AppException("Category with id: $categoryId not found") }
         val note: Note = noteMapper.mapToNote(dto)
         note.category = category
         noteRepository.save(note)
@@ -41,8 +43,8 @@ class NoteService(
 
     @Transactional(readOnly = true)
     fun getNoteAll(): List<NoteDto> {
-        return noteRepository.findAll(Sort.by(Sort.Direction.ASC,"id"))
-            .map { note -> noteMapper.mapToNoteDto(note) }
+        return noteRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
+                .map { note -> noteMapper.mapToNoteDto(note) }
     }
 
     @Transactional(readOnly = true)
@@ -50,19 +52,19 @@ class NoteService(
         val pageNumber: Int = definePageNumber(pageIndex)
         val pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(Sort.Direction.ASC, "id"))
         val page: Page<NoteDto> = noteRepository.findByCategoryId(categoryId, pageRequest)
-            .map { note -> noteMapper.mapToNoteDto(note) }
+                .map { note -> noteMapper.mapToNoteDto(note) }
         return PageResponse.from(page)
     }
 
     @Transactional(readOnly = true)
     fun getNote(id: Long): NoteDto {
-        val note: Note = noteRepository.getReferenceById(id)
+        val note: Note = noteRepository.findById(id).orElseThrow { AppException("Note with id: $id not found") }
         return noteMapper.mapToNoteDto(note)
     }
 
     @Transactional
     fun update(id: Long, dto: UpdateNoteRequest) {
-        val note: Note = noteRepository.getReferenceById(id)
+        val note: Note = noteRepository.findById(id).orElseThrow { AppException("Note with id: $id not found") }
         note.name = dto.name
         note.description = dto.description
 
