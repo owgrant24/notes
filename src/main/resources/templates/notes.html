@@ -12,13 +12,13 @@
     <title>Заметки</title>
 </head>
 
-<body th:with="pageData=${page.data}, pageNumber=${pageData.pageNumber}, totalPages=${pageData.totalPages}">
+<body th:with="categoryId=${category.id}, pageData=${page.data}, pageNumber=${pageData.pageNumber}, totalPages=${pageData.totalPages}">
 
 <div th:replace="~{fragments/navigation :: navigation}"></div>
 
 <main>
 
-    <h4 class="text-center pt-3">Заметки</h4>
+    <h4 class="text-center pt-3" th:text="${category.name}">Заметки</h4>
 
     <div class="container pt-3">
 
@@ -36,7 +36,7 @@
                         <ul class="pagination float-end">
                             <li class="page-item" th:classappend="${pageData.isFirstPage ? 'disabled' : ''}">
                                 <a class="page-link" aria-label="Previous"
-                                   th:href="@{'/notes/categories/' + ${categoryId} + '?page='+ ${pageData.previousOrFirstPageNumber + 1}}">
+                                   th:href="@{'/categories/' + ${categoryId} + '/notes' + '?page='+ ${pageData.previousOrFirstPageNumber + 1}}">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -45,12 +45,12 @@
                                 th:each="i : ${#numbers.sequence((pageNumber + 1 > 2 ? pageNumber - 1 : 1),
                                      (pageNumber + 3 < totalPages ? pageNumber + 3 : (totalPages == 0 ? 1 : totalPages)))}">
                                 <a class="page-link" th:text="${i}"
-                                   th:href="@{'/notes/categories/' + ${categoryId} + '?page=' + ${i} }"></a>
+                                   th:href="@{'/categories/' + ${categoryId} + '/notes' + '?page=' + ${i} }"></a>
                             </li>
 
                             <li class="page-item" th:classappend="${pageData.isLastPage ? 'disabled' : ''}">
                                 <a class="page-link" aria-label="Next"
-                                   th:href="@{'/notes/categories/' + ${categoryId} + '?page='+ ${pageData.nextOrLastPageNumber + 1}}">
+                                   th:href="@{'/categories/' + ${categoryId} + '/notes' + '?page='+ ${pageData.nextOrLastPageNumber + 1}}">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -67,25 +67,26 @@
                     <div class="card bg-light">
                         <!-- Тело карточки -->
                         <div class="card-header border-0 cbd">
-                            <p class="card-title text-center my-2"><a th:text="${note.getName()}"></a></p>
+                            <p class="card-title text-center my-2"><a th:text="${note.name}"></a></p>
                         </div>
                         <!-- Тело карточки -->
                         <div class="card-body">
-                            <div class="text-muted inf1" th:text="'Дата и время создания: ' + ${note.getCreatedAt()}"/>
-                            <div class="text-muted inf1" th:text="'Дата и время обновления: ' + ${note.getUpdatedAt()}"/>
+                            <div class="text-muted inf1" th:text="'Дата и время создания: ' + ${note.createdAt}"/>
+                            <div class="text-muted inf1" th:text="'Дата и время обновления: ' + ${note.updatedAt}"/>
                         </div>
                         <!-- Подвал карточки -->
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col">
-                                    <form th:method="GET" th:action="@{/notes/{id}(id=${note.getId()})}">
-                                        <button type="submit" class="btn btn-primary btn-sm float-start">Открыть</button>
+                                    <form th:method="GET" th:action="@{/notes/{id}(id=${note.id})}">
+                                        <button type="submit" class="btn btn-primary btn-sm float-start">Открыть
+                                        </button>
                                     </form>
                                 </div>
                                 <div class="col">
                                     <button type="button" class="btn btn-danger btn-sm float-end"
                                             th:data-bs-category-id="${categoryId}"
-                                            th:data-bs-note-id="${note.getId()}"
+                                            th:data-bs-note-id="${note.id}"
                                             data-bs-toggle="modal" data-bs-target="#del-note">Удалить
                                     </button>
                                 </div>

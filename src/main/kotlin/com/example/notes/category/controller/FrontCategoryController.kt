@@ -30,7 +30,21 @@ class FrontCategoryController(
         model: Model,
         @PathVariable("id") id: Long,
     ): String {
-        model.addAttribute("category", categoryFacadeService.getCategory(id))
+        val category = categoryFacadeService.getCategory(id)
+        model.addAttribute("category", category)
         return "category"
+    }
+
+    @GetMapping("/categories/{id}/notes")
+    fun getCategoryWithNotes(
+        model: Model,
+        @PathVariable("id") id: Long,
+        @RequestParam("page") pageIndex: Int?,
+        @RequestParam("size", defaultValue = "15") size: Int?,
+    ): String {
+        val categoryWithNotes = categoryFacadeService.getCategoryWithNotes(id, pageIndex, size)
+        model.addAttribute("page", categoryWithNotes.page)
+        model.addAttribute("category", categoryWithNotes.category)
+        return "notes"
     }
 }

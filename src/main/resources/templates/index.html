@@ -85,7 +85,7 @@
                         <div class="card-footer">
                             <div class="row">
                                 <div class="col">
-                                    <form th:method="GET" th:action="@{/notes/categories/{id}(id=${category.getId()})}">
+                                    <form th:method="GET" th:action="@{/categories/{id}/notes(id=${category.getId()})}">
                                         <button type="submit" class="btn btn-primary btn-sm">Открыть</button>
                                     </form>
                                 </div>

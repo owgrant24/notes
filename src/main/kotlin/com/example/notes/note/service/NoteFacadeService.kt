@@ -1,8 +1,6 @@
 package com.example.notes.note.service
 
-import com.example.notes.common.dto.PageResponse
 import com.example.notes.common.exception.AppException
-import com.example.notes.common.util.definePageNumber
 import com.example.notes.core.category.entity.Category
 import com.example.notes.core.category.service.CategoryService
 import com.example.notes.core.note.entity.Note
@@ -13,24 +11,20 @@ import com.example.notes.core.notehistory.repo.NoteHistoryRepository
 import com.example.notes.note.dto.CreateNoteRequest
 import com.example.notes.note.dto.NoteDto
 import com.example.notes.note.dto.UpdateNoteRequest
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class NoteFacadeService(
-        private val noteService: NoteService,
-        private val categoryService: CategoryService,
-        private val noteHistoryRepository: NoteHistoryRepository,
-        private val noteMapper: NoteMapper,
-        @Value(value = "\${general.note.page-size}") private val pageSize: Int,
+    private val noteService: NoteService,
+    private val categoryService: CategoryService,
+    private val noteHistoryRepository: NoteHistoryRepository,
+    private val noteMapper: NoteMapper,
 ) {
 
     @Transactional
-    fun create(createNoteRequest: CreateNoteRequest): Long {
+    fun createNote(createNoteRequest: CreateNoteRequest): Long {
         val categoryId = createNoteRequest.categoryId!!
         val category: Category = categoryService.getById(categoryId)
         val note: Note = noteMapper.mapToNote(createNoteRequest)
@@ -43,16 +37,7 @@ class NoteFacadeService(
     @Transactional(readOnly = true)
     fun getNoteAll(): List<NoteDto> {
         return noteService.findAll(Sort.by(Sort.Direction.ASC, "id"))
-                .map(noteMapper::mapToNoteDto)
-    }
-
-    @Transactional(readOnly = true)
-    fun getAllByCategoryId(categoryId: Long, pageIndex: Int?, size: Int?): PageResponse<NoteDto> {
-        val pageNumber: Int = definePageNumber(pageIndex)
-        val pageRequest = PageRequest.of(pageNumber - 1, size ?: pageSize, Sort.by(Sort.Direction.ASC, "id"))
-        val page: Page<NoteDto> = noteService.findByCategoryId(categoryId, pageRequest)
-                .map(noteMapper::mapToNoteDto)
-        return PageResponse.from(page)
+            .map(noteMapper::mapToNoteDto)
     }
 
     @Transactional(readOnly = true)
@@ -62,7 +47,7 @@ class NoteFacadeService(
     }
 
     @Transactional
-    fun update(id: Long, updateNoteRequest: UpdateNoteRequest) {
+    fun updateNote(id: Long, updateNoteRequest: UpdateNoteRequest) {
         val note: Note = noteService.getById(id)
         note.name = updateNoteRequest.name
         note.description = updateNoteRequest.description
@@ -72,7 +57,7 @@ class NoteFacadeService(
     }
 
     @Transactional
-    fun delete(id: Long) {
+    fun deleteNote(id: Long) {
         val note = noteService.getById(id);
         noteService.delete(note)
     }

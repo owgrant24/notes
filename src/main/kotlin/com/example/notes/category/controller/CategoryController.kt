@@ -1,6 +1,7 @@
 package com.example.notes.category.controller
 
 import com.example.notes.category.dto.CategoryDto
+import com.example.notes.category.dto.CategoryWithNotesResponse
 import com.example.notes.category.dto.CreateCategoryRequest
 import com.example.notes.category.dto.UpdateCategoryRequest
 import com.example.notes.category.service.CategoryFacadeService
@@ -32,6 +33,15 @@ class CategoryController(
     @Operation(summary = "Получить категорию по идентификатору")
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): CategoryDto = categoryFacadeService.getCategory(id)
+
+    @Operation(summary = "Получить категорию со всеми заметками")
+    @GetMapping("/{id}/notes")
+    fun getCategoryWithNotes(
+        @PathVariable id: Long,
+        @RequestParam("page") pageIndex: Int?,
+        @RequestParam("size", defaultValue = "15") size: Int?,
+    ): CategoryWithNotesResponse =
+        categoryFacadeService.getCategoryWithNotes(id, pageIndex, size)
 
     @Operation(summary = "Обновить категорию")
     @PutMapping("/{id}")

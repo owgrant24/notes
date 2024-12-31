@@ -40,5 +40,5 @@ function deleteNote(id, categoryId, pageNumber) {
 
 // Обновление части страницы
 function updatePartPage(categoryId, pageNumber) {
-    $("#notes").load(`/notes/categories/${categoryId}?page=${pageNumber} #notes`);
+    $("#notes").load(`/categories/${categoryId}/notes?page=${pageNumber} #notes`);
 }
