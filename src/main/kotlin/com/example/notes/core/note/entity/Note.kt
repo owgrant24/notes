@@ -19,6 +19,7 @@ class Note {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now()
+    var version: Long = 0
     var name: String = ""
     var description: String? = null
     @ManyToOne(fetch = FetchType.LAZY,

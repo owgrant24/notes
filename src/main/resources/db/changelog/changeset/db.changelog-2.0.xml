@@ -36,5 +36,19 @@
         </createTable>
     </changeSet>
 
-    <!--    -->
+    <changeSet id="add_column_revision_note_table" author="ashabelskii">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="note"/>
+            <not>
+                <columnExists tableName="note" columnName="version"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="note">
+            <column name="version" type="BIGINT" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

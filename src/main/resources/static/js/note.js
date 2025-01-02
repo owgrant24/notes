@@ -20,23 +20,37 @@ ClassicEditor
     });
 
 function updateNote(id) {
+    let version = document.getElementById("note-version").innerText;
     let name = document.getElementById("name-note").value;
     let description = editor.getData();
+    let v = Number(version) + 1
 
     axios.put('/v1/notes/' + id, {
         name: name,
-        description: description
+        description: description,
+        version: v
     })
         .then(function () {
             $("#info-note").load(`/notes/${id} #info-note`);
             notifySuccessfulSaving();
         })
-        .catch((err) => console.log(err.message));
+        .catch((err) => {
+            notifyFailedSaving(err.response.data);
+            console.log(err.message);
+        });
 }
 
 function notifySuccessfulSaving() {
     const notifySuccess = document.getElementById('notifySuccess');
     const toast = new bootstrap.Toast(notifySuccess);
+    toast.show();
+}
+
+function notifyFailedSaving(message) {
+    const notifyFailed = document.getElementById('notifyFailed');
+    const toast = new bootstrap.Toast(notifyFailed);
+    const toastBody = notifyFailed.querySelector('#notifyFailed .toast-body');
+    toastBody.textContent = message
     toast.show();
 }
 

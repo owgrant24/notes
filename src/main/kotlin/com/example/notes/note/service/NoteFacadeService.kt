@@ -1,6 +1,8 @@
 package com.example.notes.note.service
 
 import com.example.notes.common.exception.AppException
+import com.example.notes.common.exception.VersionConflictException
+import com.example.notes.common.util.DATE_TIME_FORMATTER
 import com.example.notes.core.category.entity.Category
 import com.example.notes.core.category.service.CategoryService
 import com.example.notes.core.note.entity.Note
@@ -14,6 +16,7 @@ import com.example.notes.note.dto.UpdateNoteRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 class NoteFacadeService(
@@ -49,6 +52,19 @@ class NoteFacadeService(
     @Transactional
     fun updateNote(id: Long, updateNoteRequest: UpdateNoteRequest) {
         val note: Note = noteService.getById(id)
+        val currentVersion = note.version
+        if (currentVersion + 1 != updateNoteRequest.version) {
+            val timestamp = DATE_TIME_FORMATTER.format(note.updatedAt)
+            throw VersionConflictException(
+                "Заметка с id = $id была ранее обновлена, timestamp = $timestamp, version = ${note.version}"
+            )
+        }
+        if (Objects.equals(note.name, updateNoteRequest.name)
+            && Objects.equals(note.description, updateNoteRequest.description)
+        ) {
+            return
+        }
+        note.version = currentVersion + 1
         note.name = updateNoteRequest.name
         note.description = updateNoteRequest.description
 
@@ -58,7 +74,7 @@ class NoteFacadeService(
 
     @Transactional
     fun deleteNote(id: Long) {
-        val note = noteService.getById(id);
+        val note = noteService.getById(id)
         noteService.delete(note)
     }
 

@@ -21,6 +21,6 @@ class NoteMapper {
         val id: Long = note.id ?: throw AppException("Invalid data")
         val createdAt: String = DATE_TIME_FORMATTER.format(note.createdAt)
         val updatedAt: String = DATE_TIME_FORMATTER.format(note.updatedAt)
-        return NoteDto(id, createdAt, updatedAt, note.name, note.description)
+        return NoteDto(id, createdAt, updatedAt, note.version, note.name, note.description)
     }
 }
